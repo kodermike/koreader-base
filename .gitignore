@@ -6,6 +6,7 @@
 cscope.*
 *.orig
 tags
+*.log
 
 /.cproject
 /.project
@@ -15,3 +16,4 @@ tags
 /build
 
 /thirdparty/**/build
+/utils/__pycache__/**
