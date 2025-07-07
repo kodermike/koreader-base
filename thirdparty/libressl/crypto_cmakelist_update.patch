@@ -1,0 +1,212 @@
+--- a/crypto/CMakeLists.txt
++++ b/crypto/CMakeLists.txt
+@@ -1,30 +1,28 @@
++#
++# Copyright (c) 2014 Brent Cook
++#
++# Permission to use, copy, modify, and distribute this software for any
++# purpose with or without fee is hereby granted, provided that the above
++# copyright notice and this permission notice appear in all copies.
++#
++# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
+ add_definitions(-DLIBRESSL_CRYPTO_INTERNAL)
+
+-if(HOST_ASM_ELF_ARMV4)
+-	set(
+-		ASM_ARMV4_ELF_SRC
+-		aes/aes-elf-armv4.S
+-		bn/mont-elf-armv4.S
+-		sha/sha1-elf-armv4.S
+-		sha/sha512-elf-armv4.S
+-		sha/sha256-elf-armv4.S
+-		modes/ghash-elf-armv4.S
+-		armv4cpuid.S
+-		armcap.c
+-	)
+-	add_definitions(-DAES_ASM)
+-	add_definitions(-DOPENSSL_BN_ASM_MONT)
+-	add_definitions(-DGHASH_ASM)
+-	add_definitions(-DOPENSSL_CPUID_OBJ)
+-	set(CRYPTO_SRC ${CRYPTO_SRC} ${ASM_ARMV4_ELF_SRC})
+-endif()
+-
+ if(HOST_ASM_ELF_X86_64)
++	set(CRYPTO_SRC ${CRYPTO_SRC} aes/aes_amd64.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} bn/arch/amd64/bn_arch.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} modes/gcm128_amd64.c)
++
+ 	set(
+ 		ASM_X86_64_ELF_SRC
+ 		aes/aes-elf-x86_64.S
+-		aes/bsaes-elf-x86_64.S
+-		aes/vpaes-elf-x86_64.S
+ 		aes/aesni-elf-x86_64.S
+ 		bn/modexp512-elf-x86_64.S
+ 		bn/mont-elf-x86_64.S
+@@ -43,7 +41,6 @@ if(HOST_ASM_ELF_X86_64)
+ 		bn/arch/amd64/bignum_sqr_8_16_alt.S
+ 		bn/arch/amd64/bignum_sub.S
+ 		bn/arch/amd64/word_clz.S
+-		bn/arch/amd64/bn_arch.c
+ 	)
+ 	add_definitions(-DAES_ASM)
+ 	add_definitions(-DBSAES_ASM)
+@@ -57,11 +54,13 @@ if(HOST_ASM_MACOSX_X86_64)
+ endif()
+
+ if(HOST_ASM_MACOSX_X86_64)
++	set(CRYPTO_SRC ${CRYPTO_SRC} aes/aes_amd64.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} bn/arch/amd64/bn_arch.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} modes/gcm128_amd64.c)
++
+ 	set(
+ 		ASM_X86_64_MACOSX_SRC
+ 		aes/aes-macosx-x86_64.S
+-		aes/bsaes-macosx-x86_64.S
+-		aes/vpaes-macosx-x86_64.S
+ 		aes/aesni-macosx-x86_64.S
+ 		bn/modexp512-macosx-x86_64.S
+ 		bn/mont-macosx-x86_64.S
+@@ -80,7 +79,6 @@ if(HOST_ASM_MACOSX_X86_64)
+ 		bn/arch/amd64/bignum_sqr_8_16_alt.S
+ 		bn/arch/amd64/bignum_sub.S
+ 		bn/arch/amd64/word_clz.S
+-		bn/arch/amd64/bn_arch.c
+ 	)
+ 	add_definitions(-DAES_ASM)
+ 	add_definitions(-DBSAES_ASM)
+@@ -95,11 +93,12 @@ if(HOST_ASM_MASM_X86_64)
+ endif()
+
+ if(HOST_ASM_MASM_X86_64)
++	set(CRYPTO_SRC ${CRYPTO_SRC} aes/aes_amd64.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} modes/gcm128_amd64.c)
++
+ 	set(
+ 		ASM_X86_64_MASM_SRC
+ 		aes/aes-masm-x86_64.S
+-		aes/bsaes-masm-x86_64.S
+-		aes/vpaes-masm-x86_64.S
+ 		aes/aesni-masm-x86_64.S
+ 		#bn/modexp512-masm-x86_64.S
+ 		#bn/mont-masm-x86_64.S
+@@ -121,11 +120,12 @@ if(HOST_ASM_MINGW64_X86_64)
+ endif()
+
+ if(HOST_ASM_MINGW64_X86_64)
++	set(CRYPTO_SRC ${CRYPTO_SRC} aes/aes_amd64.c)
++	set(CRYPTO_SRC ${CRYPTO_SRC} modes/gcm128_amd64.c)
++
+ 	set(
+ 		ASM_X86_64_MINGW64_SRC
+ 		aes/aes-mingw64-x86_64.S
+-		aes/bsaes-mingw64-x86_64.S
+-		aes/vpaes-mingw64-x86_64.S
+ 		aes/aesni-mingw64-x86_64.S
+ 		#bn/modexp512-mingw64-x86_64.S
+ 		#bn/mont-mingw64-x86_64.S
+@@ -146,7 +146,17 @@ if(HOST_AARCH64)
+ endif()
+
+ if(HOST_AARCH64)
+-	set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps.c)
++  if(APPLE)
++    set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps_darwin.c)
++  elseif(LINUX)
++    set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps_linux.c)
++  elseif(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
++    set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps.c)
++  elseif(WIN32)
++    set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps_windows.c)
++  else()
++    set(CRYPTO_SRC ${CRYPTO_SRC} arch/aarch64/crypto_cpu_caps_none.c)
++  endif()
+ elseif(HOST_X86_64)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} arch/amd64/crypto_cpu_caps.c)
+ elseif(HOST_I386)
+@@ -163,7 +173,6 @@ set(
+ 	crypto_memory.c
+ 	aes/aes.c
+ 	aes/aes_core.c
+-	aes/aes_ige.c
+ 	asn1/a_bitstr.c
+ 	asn1/a_enum.c
+ 	asn1/a_int.c
+@@ -245,6 +254,7 @@ set(
+ 	bio/bss_null.c
+ 	bio/bss_sock.c
+ 	bn/bn_add.c
++	bn/bn_add_sub.c
+ 	bn/bn_bpsw.c
+ 	bn/bn_const.c
+ 	bn/bn_convert.c
+@@ -258,6 +268,7 @@ set(
+ 	bn/bn_lib.c
+ 	bn/bn_mod.c
+ 	bn/bn_mod_sqrt.c
++	bn/bn_mod_words.c
+ 	bn/bn_mont.c
+ 	bn/bn_mul.c
+ 	bn/bn_prime.c
+@@ -339,11 +350,13 @@ set(
+ 	ec/ec_convert.c
+ 	ec/ec_curve.c
+ 	ec/ec_err.c
++	ec/ec_field.c
+ 	ec/ec_key.c
+ 	ec/ec_lib.c
+ 	ec/ec_mult.c
+ 	ec/ec_pmeth.c
+ 	ec/eck_prn.c
++	ec/ecp_hp_methods.c
+ 	ec/ecp_methods.c
+ 	ec/ecx_methods.c
+ 	ecdh/ecdh.c
+@@ -464,11 +477,7 @@ set(
+ 	rand/rand_err.c
+ 	rand/rand_lib.c
+ 	rand/randfile.c
+-	rc2/rc2_cbc.c
+-	rc2/rc2_ecb.c
+-	rc2/rc2_skey.c
+-	rc2/rc2cfb64.c
+-	rc2/rc2ofb64.c
++	rc2/rc2.c
+ 	rc4/rc4.c
+ 	ripemd/ripemd.c
+ 	rsa/rsa_ameth.c
+@@ -570,17 +579,17 @@ set(COMPAT_SRC empty.c)
+
+ set(COMPAT_SRC empty.c)
+
++set(CRYPTO_UNEXPORT ${CRYPTO_UNEXPORT} BIO_s_log)
++
+ if(UNIX)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} crypto_lock.c)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} bio/b_posix.c)
+-	set(CRYPTO_SRC ${CRYPTO_SRC} bio/bss_log.c)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} ui/ui_openssl.c)
+ endif()
+
+ if(WIN32)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} compat/crypto_lock_win.c)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} bio/b_win.c)
+-	set(CRYPTO_UNEXPORT ${CRYPTO_UNEXPORT} BIO_s_log)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} ui/ui_openssl_win.c)
+ endif()
+
+@@ -736,6 +745,7 @@ target_include_directories(crypto_obj
+ target_include_directories(crypto_obj
+ 	PRIVATE
+ 		.
++		aes
+ 		asn1
+ 		bio
+ 		bn
