@@ -5,8 +5,9 @@
  # Copyright (c) 2014-2015 Brent Cook
  #
  # Permission to use, copy, modify, and distribute this software for any
-@@ -114,8 +115,6 @@ AC_ARG_ENABLE([asm], AS_HELP_STRING([--disable-asm], [Disable assembly]))
+@@ -114,8 +115,6 @@ AM_CONDITIONAL([OPENSSL_NO_ASM], [test "x$enable_asm"
  AM_CONDITIONAL([OPENSSL_NO_ASM], [test "x$enable_asm" = "xno"])
+
  # Conditionally enable assembly by default
 -AM_CONDITIONAL([HOST_ASM_ELF_ARM],
 -    [test "x$HOST_ABI" = "xelf" -a "$host_cpu" = "arm" -a "x$enable_asm" != "xno"])

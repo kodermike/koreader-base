@@ -143,7 +143,7 @@
  	bio/bss_null.c
  	bio/bss_sock.c
  	bn/bn_add.c
-+	bn/bn_add_sub.c
++#	bn/bn_add_sub.c
  	bn/bn_bpsw.c
  	bn/bn_const.c
  	bn/bn_convert.c
@@ -151,7 +151,7 @@
  	bn/bn_lib.c
  	bn/bn_mod.c
  	bn/bn_mod_sqrt.c
-+	bn/bn_mod_words.c
++#	bn/bn_mod_words.c
  	bn/bn_mont.c
  	bn/bn_mul.c
  	bn/bn_prime.c
@@ -159,13 +159,13 @@
  	ec/ec_convert.c
  	ec/ec_curve.c
  	ec/ec_err.c
-+	ec/ec_field.c
++#	ec/ec_field.c
  	ec/ec_key.c
  	ec/ec_lib.c
  	ec/ec_mult.c
  	ec/ec_pmeth.c
  	ec/eck_prn.c
-+	ec/ecp_hp_methods.c
++#	ec/ecp_hp_methods.c
  	ec/ecp_methods.c
  	ec/ecx_methods.c
  	ecdh/ecdh.c
@@ -178,7 +178,7 @@
 -	rc2/rc2_skey.c
 -	rc2/rc2cfb64.c
 -	rc2/rc2ofb64.c
-+	rc2/rc2.c
++#	rc2/rc2.c
  	rc4/rc4.c
  	ripemd/ripemd.c
  	rsa/rsa_ameth.c

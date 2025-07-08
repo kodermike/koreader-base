@@ -22,9 +22,19 @@
  if(MSVC)
  	cmake_policy(SET CMP0091 NEW)
  endif()
+@@ -127,7 +143,7 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID MAT
+ set(CMAKE_POSITION_INDEPENDENT_CODE true)
+
+ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID MATCHES "Clang")
+-	add_compile_options(-Wno-pointer-sign)
++	add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-pointer-sign>)
+ endif()
+
+ if(WIN32)
 @@ -371,18 +387,23 @@ if(APPLE AND (NOT CMAKE_OSX_ARCHITECTURES STREQUAL ""))
  	set(CMAKE_SYSTEM_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}")
  endif()
+
 +# CMAKE_SYSTEM_PROCESSOR is not consistently set to the target architecture.
 +# https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PROCESSOR.html
 +if (WIN32 AND (NOT CMAKE_GENERATOR_PLATFORM STREQUAL ""))
@@ -50,7 +60,6 @@
  	set(ENABLE_ASM false)
  	set(HOST_I386 true)
  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "loongarch64")
- 
 @@ -407,8 +428,6 @@ if(ENABLE_ASM)
  	if(CMAKE_C_COMPILER_ABI STREQUAL "ELF")
  		if(HOST_X86_64)
@@ -66,8 +75,8 @@
  		set(exec_prefix \${prefix})
 -		set(libdir      \${exec_prefix}/${CMAKE_INSTALL_LIBDIR})
 -		set(includedir  \${prefix}/${CMAKE_INSTALL_INCLUDEDIR})
-+    set(libdir      \${exec_prefix}/lib)
-+    set(includedir  \${prefix}/include)
++       set(libdir      \${exec_prefix}/lib)
++       set(includedir  \${prefix}/include)
  		if(PLATFORM_LIBS)
  			string(REGEX REPLACE ";" " -l" PLATFORM_LDADD ";${PLATFORM_LIBS}")
  		endif()

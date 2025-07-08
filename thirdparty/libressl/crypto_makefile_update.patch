@@ -118,7 +118,7 @@
 
  # bn
  libcrypto_la_SOURCES += bn/bn_add.c
-+libcrypto_la_SOURCES += bn/bn_add_sub.c
++#libcrypto_la_SOURCES += bn/bn_add_sub.c
  libcrypto_la_SOURCES += bn/bn_bpsw.c
  libcrypto_la_SOURCES += bn/bn_const.c
  libcrypto_la_SOURCES += bn/bn_convert.c
@@ -126,7 +126,7 @@
  libcrypto_la_SOURCES += bn/bn_lib.c
  libcrypto_la_SOURCES += bn/bn_mod.c
  libcrypto_la_SOURCES += bn/bn_mod_sqrt.c
-+libcrypto_la_SOURCES += bn/bn_mod_words.c
++#libcrypto_la_SOURCES += bn/bn_mod_words.c
  libcrypto_la_SOURCES += bn/bn_mont.c
  libcrypto_la_SOURCES += bn/bn_mul.c
  libcrypto_la_SOURCES += bn/bn_prime.c
@@ -134,13 +134,13 @@
  libcrypto_la_SOURCES += ec/ec_convert.c
  libcrypto_la_SOURCES += ec/ec_curve.c
  libcrypto_la_SOURCES += ec/ec_err.c
-+libcrypto_la_SOURCES += ec/ec_field.c
++#libcrypto_la_SOURCES += ec/ec_field.c
  libcrypto_la_SOURCES += ec/ec_key.c
  libcrypto_la_SOURCES += ec/ec_lib.c
  libcrypto_la_SOURCES += ec/ec_mult.c
  libcrypto_la_SOURCES += ec/ec_pmeth.c
  libcrypto_la_SOURCES += ec/eck_prn.c
-+libcrypto_la_SOURCES += ec/ecp_hp_methods.c
++#libcrypto_la_SOURCES += ec/ecp_hp_methods.c
  libcrypto_la_SOURCES += ec/ecp_methods.c
  libcrypto_la_SOURCES += ec/ecx_methods.c
 +noinst_HEADERS += ec/ec_internal.h
@@ -156,7 +156,7 @@
 -libcrypto_la_SOURCES += rc2/rc2_skey.c
 -libcrypto_la_SOURCES += rc2/rc2cfb64.c
 -libcrypto_la_SOURCES += rc2/rc2ofb64.c
-+libcrypto_la_SOURCES += rc2/rc2.c
++#libcrypto_la_SOURCES += rc2/rc2.c
  noinst_HEADERS += rc2/rc2_local.h
 
  # rc4
